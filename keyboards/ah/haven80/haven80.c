@@ -13,16 +13,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "quantum.h"
+
+#ifdef RGBLIGHT_ENABLE
+void keyboard_post_init_user(void) {
+  rgblight_enable_noeeprom(); // Enables RGB, without saving settings
+  rgblight_sethsv_noeeprom(6, 140.25, 255);
+  rgblight_mode_noeeprom(RGBLIGHT_MODE_CHRISTMAS);
+}
+#endif
 
 bool led_update_kb(led_t led_state) {
     bool res = led_update_user(led_state);
     if (res) {
     if (led_state.caps_lock) {
-        rgblight_sethsv_range(0, 0, 255, 0,20);
+        int mode = rgblight_get_mode();
+        rgblight_sethsv_noeeprom(6, 140.25, 255);
+        rgblight_mode_noeeprom(mode);
     } else {
-        rgblight_sethsv_range(0, 0, 0, 0, 20);
+        int mode2 = rgblight_get_mode();
+        rgblight_sethsv_noeeprom(222, 13.26, 248.88);
+        rgblight_mode_noeeprom(mode2);
     }
   }
     return res;
